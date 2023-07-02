@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json({limit : '50mb'}));
 
 app.use('/api/v1/post', postRoutes);
-app.use('/api/v1/snapAI', snapAIRoutes);
+app.use('/api/v1/snapai', snapAIRoutes);
 
 app.get('/',  async(req,res) => {
     res.send('Hello from SnapAI');
@@ -25,6 +25,7 @@ const startServer = async () => {
         connectDB(process.env.MONGODB_URL);
         app.listen(8080, () => console.log('Server has started on the port 8080'))
     }
+
     catch(error){
         console.log(error);
     }
