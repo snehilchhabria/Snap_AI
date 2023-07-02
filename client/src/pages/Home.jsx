@@ -17,6 +17,8 @@ const Home = () => {
     const [allPosts, setAllPosts] = useState(null);
 
     const [searchText, setSearchText] = useState("");
+    const[SearchedResults, setSearchedResults] = useState(null)
+    const [searchTimeout, setSearchTimeout] = useState(null);
 
     useEffect(() => {
         const fetchPosts = async () =>{
@@ -41,7 +43,21 @@ const Home = () => {
                 setLoading(false);
             }
         }
-    })
+
+        fetchPosts();
+    }, []);
+
+    const handleSearchChange = (e) => {
+        clearTimeout(searchTimeout);
+        setSearchText(e.target.value);
+    
+        setSearchTimeout(
+          setTimeout(() => {
+            const searchResult = allPosts.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()) || item.prompt.toLowerCase().includes(searchText.toLowerCase()));
+            setSearchedResults(searchResult);
+          }, 500),
+        );
+      }
 
   return (
     <section className="max-w-7xl mx-auto">
@@ -51,7 +67,14 @@ const Home = () => {
             </div>
 
             <div className="mt-16">
-                <FormField/>
+                <FormField
+                    labelName="Search posts"
+                    type="text"
+                    name="text"
+                    placeholder="Search something..."
+                    value={searchText}
+                    handleChange={handleSearchChange}
+                />
             </div>
 
             <div className="m-10">
